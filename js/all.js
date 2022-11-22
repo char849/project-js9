@@ -233,14 +233,8 @@ const orderBtn = document.querySelector(".orderInfo-btn");
 orderBtn.addEventListener("click", (e) => {
   e.preventDefault();
   // console.log('你被點擊了')
-  if (cartData == 0) {
-    swal({
-        title: "購物車己清空",
-        icon: "error",
-        buttons: "OK",
-        dangerMode: true,
-      });
-    // Swal.fire({"購物車己清空", "請加入購物車", "error"});
+  if (cartData == 0) {    
+    Swal.fire("購物車己清空", "請加入購物車", "error");
     return;
   }
   const customerName = document.querySelector("#customerName").value;
