@@ -859,7 +859,7 @@ a {
   background-color: #C44021;
   color: #fff;        
 }
-.top.isShow {
+.top .isShow {
 opacity: 1;
 visibility: visible;
 }
