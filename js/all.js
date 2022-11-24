@@ -6,60 +6,60 @@ const form = document.querySelector(".orderInfo-form");
 const inputs = document.querySelectorAll("input[name],select[data=payment]");
 
 const constraints = {
-    "姓名": {
-      presence: {
-        message: "必填欄位"
-      }
+  姓名: {
+    presence: {
+      message: "必填欄位",
     },
-    "電話": {
-      presence: {
-        message: "必填欄位"
-      },
-      length: {
-        minimum: 8,
-        message: "需超過 8 碼"
-      }
+  },
+  電話: {
+    presence: {
+      message: "必填欄位",
     },
-    "信箱": {
-        presence: {
-            message: "是必填的欄位"
-        },
-        format: {
-            pattern: /^[^@\s]+@[^@\s]+\.[^@\s]+$/,
-            message: "格式輸入錯誤"
-        },
-    },  
-    "寄送地址": {
-      presence: {
-        message: "必填欄位"
-      }
+    length: {
+      minimum: 8,
+      message: "需超過 8 碼",
     },
-    "交易方式": {
-      presence: {
-        message: "必填欄位"
-      }
+  },
+  信箱: {
+    presence: {
+      message: "是必填的欄位",
     },
+    format: {
+      pattern: /^[^@\s]+@[^@\s]+\.[^@\s]+$/,
+      message: "格式輸入錯誤",
+    },
+  },
+  寄送地址: {
+    presence: {
+      message: "必填欄位",
+    },
+  },
+  交易方式: {
+    presence: {
+      message: "必填欄位",
+    },
+  },
 };
 
 // 欄位驗證
 inputs.forEach((item) => {
-    item.addEventListener("change", function () {
-      
-      item.nextElementSibling.textContent = '';
-      let errors = validate(form, constraints) || '';
-      console.log(errors)
+  item.addEventListener("change", function () {
+    item.nextElementSibling.textContent = "";
+    let errors = validate(form, constraints) || "";
+    console.log(errors);
 
-      if (errors) {
-        formCheck(errors);
-        return;
-      }
-    });
+    if (errors) {
+      formCheck(errors);
+      return;
+    }
   });
-function formCheck(errors){
-    Object.keys(errors).forEach(function (keys) {
-        // console.log(document.querySelector(`[data-message=${keys}]`))
-        document.querySelector(`[data-message="${keys}"]`).textContent = errors[keys];
-      }) 
+});
+function formCheck(errors) {
+  Object.keys(errors).forEach(function (keys) {
+    // console.log(document.querySelector(`[data-message=${keys}]`))
+    document.querySelector(`[data-message="${keys}"]`).textContent =
+      errors[keys];
+  });
 }
 
 let productData = [];
@@ -70,6 +70,8 @@ function init() {
 }
 init();
 function getProductList() {
+  // loading 顯示
+  document.getElementById("preloder").style.display = "block";
   axios
     .get(
       `https://livejs-api.hexschool.io/api/livejs/v1/customer/${api_path}/products`
@@ -77,6 +79,11 @@ function getProductList() {
     .then((res) => {
       productData = res.data.products;
       renderProductList();
+    })
+    
+    .finally(() => {
+      // loading 消失
+      document.getElementById("preloder").style.display = "none";
     });
 }
 
@@ -137,6 +144,8 @@ productList.addEventListener("click", (e) => {
     }
   });
   // console.log(numCart)
+  // loading 顯示
+  document.getElementById("preloder").style.display = "block";
   axios
     .post(
       `https://livejs-api.hexschool.io/api/livejs/v1/customer/${api_path}/carts`,
@@ -152,6 +161,10 @@ productList.addEventListener("click", (e) => {
       Swal.fire("新增成功", "加入購物車", "success");
       // 重新渲染購物車列表資料
       getCartList();
+    })    
+    .finally(() => {
+      // loading 消失
+      document.getElementById("preloder").style.display = "none";
     });
 });
 
@@ -200,6 +213,8 @@ cartList.addEventListener("click", (e) => {
   }
   console.log(cartId);
   // 刪除單筆購物車項目
+  // loading 顯示
+  document.getElementById("preloder").style.display = "block";
   axios
     .delete(
       `https://livejs-api.hexschool.io/api/livejs/v1/customer/${api_path}/carts/${cartId}`
@@ -208,6 +223,10 @@ cartList.addEventListener("click", (e) => {
       Swal.fire("刪除成功", "刪除單筆購物車成功", "success");
       // 重新渲染購物車列表資料
       getCartList();
+    })    
+    .finally(() => {
+      // loading 消失
+      document.getElementById("preloder").style.display = "none";
     });
 });
 
@@ -215,6 +234,8 @@ cartList.addEventListener("click", (e) => {
 const delAllBtn = document.querySelector(".discardAllBtn");
 delAllBtn.addEventListener("click", (e) => {
   e.preventDefault();
+  // loading 顯示
+  document.getElementById("preloder").style.display = "block";
   axios
     .delete(
       `https://livejs-api.hexschool.io/api/livejs/v1/customer/${api_path}/carts/`
@@ -225,16 +246,20 @@ delAllBtn.addEventListener("click", (e) => {
     })
     .catch((err) => {
       Swal.fire("購物車己經清空", "請再重新加入購物車", "error");
+    })
+    .finally(() => {
+      // loading 消失
+      document.getElementById("preloder").style.display = "none";
     });
 });
 
 // 送出訂單
 const orderBtn = document.querySelector(".orderInfo-btn");
 orderBtn.addEventListener("click", (e) => {
-  e.preventDefault();
+  e.preventDefault();  
   // console.log('你被點擊了')
-  if (cartData == 0) {    
-    Swal.fire("購物車己清空", "請加入購物車", "error");
+  if (cartData == 0) {
+    Swal.fire("購物車己清空", "請加入購物車", "error");    
     return;
   }
   const customerName = document.querySelector("#customerName").value;
@@ -248,22 +273,21 @@ orderBtn.addEventListener("click", (e) => {
     Swal.fire("欄位請全部填寫", "或欄位格式錯誤", "error");
     return;
   }
-//   if (
-//     customerName == "" ||
-//     customerPhone == "" ||
-//     customerEmail == "" ||
-//     customerAddress == "" ||
-//     customerTradeWay == ""
-//   ) {
-//     Swal.fire("請勿輸入空資訊", "請填入資訊", "error");
-//     return;
-//   }
+  //   if (
+  //     customerName == "" ||
+  //     customerPhone == "" ||
+  //     customerEmail == "" ||
+  //     customerAddress == "" ||
+  //     customerTradeWay == ""
+  //   ) {
+  //     Swal.fire("請勿輸入空資訊", "請填入資訊", "error");
+  //     return;
+  //   }
   // mail 欄位驗證
-//   if (validateEmail(customerEmail) == false) {
-//     Swal.fire("請填寫正確的Email", "格式輸入錯誤", "error");
-//     return;
-//   }
-
+  //   if (validateEmail(customerEmail) == false) {
+  //     Swal.fire("請填寫正確的Email", "格式輸入錯誤", "error");
+  //     return;
+  //   }
 
   axios
     .post(
@@ -297,10 +321,9 @@ orderBtn.addEventListener("click", (e) => {
 //   } else {
 //     document.querySelector(`[data-message=Email]`).textContent =
 //     "";
-//     return; 
+//     return;
 //   }
 // });
-
 
 // util js、元件
 // 千分位

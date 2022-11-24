@@ -72,9 +72,6 @@ body {
   font-family: 'Noto Sans', sans-serif;
   font-weight: bold;
 }
-a {
-  text-decoration:none;
-}
 
 .wrap {
   max-width: 1110px;
@@ -207,7 +204,7 @@ a {
 
 .banner {
   position: relative;
-  background-image: url("https://github.com/hexschool/js-training/blob/main/%E7%AC%AC%E4%B9%9D%E9%80%B1%E4%B8%BB%E7%B7%9A%E4%BB%BB%E5%8B%99%E5%9C%96%E5%BA%AB/3ewLAKn.png?raw=true");
+  background-image: url("https://i.imgur.com/3ewLAKn.png");
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -361,7 +358,6 @@ a {
   display: flex;
   margin-left: 30px;
   min-width: 350px;
-  height: 96px;
   background-color: #FFFFFF;
 }
 
@@ -794,36 +790,10 @@ a {
   opacity: 0.8;
 }
 
-.orderStatus {
-  position: relative;
-}
-
 .orderStatus a {
-  position: absolute;
   padding: 10px;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
   display: block;
-  text-decoration: none;
-  color: #FFFFFF;
-}
-
-.orderStatus-unDone {
-  background-color: #747474;
-}
-
-.orderStatus-unDone:hover {
-  background-color: #000000;
-}
-
-.orderStatus-done {
-  background-color: #000000;
-}
-
-.orderStatus-done:hover {
-  background-color: #747474;
+  color: #0067CE;
 }
 
 .orderTableWrap {
@@ -838,47 +808,3 @@ a {
   display: none;
 }
 /*# sourceMappingURL=all.css.map */
-
-.top {
-  position: fixed;
-  right: 3rem;
-  bottom: 3rem;
-  z-index: 3;
-  width: 71px;
-  height: 71px;
-  color: #fff;
-  background-color: #6A33F8;
-  border-radius: 50%;
-  opacity: 0;
-  visibility: hidden; 
-  font-weight: bold; 
-
-}
-
-.top:hover {
-  background-color: #C44021;
-  color: #fff;        
-}
-.top.isShow {
-opacity: 1;
-visibility: visible;
-}
-
-.top-center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-#spinner {
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity .5s ease-out, visibility 0s linear .5s;
-  z-index: 99999;
-}
-
-#spinner.show {
-  transition: opacity .5s ease-out, visibility 0s linear 0s;
-  visibility: visible;
-  opacity: 1;
-}
