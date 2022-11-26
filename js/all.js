@@ -1,3 +1,7 @@
+
+// 匯入 共用 API
+import * as api from './api.js';
+
 // console.log(api_path, token)
 const productList = document.querySelector(".productWrap");
 const productSelect = document.querySelector(".productSelect");
@@ -73,9 +77,7 @@ function getProductList() {
   // loading 顯示
   document.getElementById("preloder").style.display = "block";
   axios
-    .get(
-      `https://livejs-api.hexschool.io/api/livejs/v1/customer/${api_path}/products`
-    )
+    api.getProductList()
     .then((res) => {
       productData = res.data.products;
       renderProductList();
@@ -147,9 +149,7 @@ productList.addEventListener("click", (e) => {
   // loading 顯示
   document.getElementById("preloder").style.display = "block";
   axios
-    .post(
-      `https://livejs-api.hexschool.io/api/livejs/v1/customer/${api_path}/carts`,
-      {
+    api.addCart({
         data: {
           productId: productId,
           quantity: numCart,
@@ -170,9 +170,7 @@ productList.addEventListener("click", (e) => {
 
 function getCartList() {
   axios
-    .get(
-      `https://livejs-api.hexschool.io/api/livejs/v1/customer/${api_path}/carts`
-    )
+    api.getCarts()
     .then((res) => {
       // console.log(res.data)
       // 將總金額的金錢覆寫進去
@@ -216,9 +214,7 @@ cartList.addEventListener("click", (e) => {
   // loading 顯示
   document.getElementById("preloder").style.display = "block";
   axios
-    .delete(
-      `https://livejs-api.hexschool.io/api/livejs/v1/customer/${api_path}/carts/${cartId}`
-    )
+    api.deleteCart(cartId)
     .then((res) => {
       Swal.fire("刪除成功", "刪除單筆購物車成功", "success");
       // 重新渲染購物車列表資料
@@ -237,9 +233,7 @@ delAllBtn.addEventListener("click", (e) => {
   // loading 顯示
   document.getElementById("preloder").style.display = "block";
   axios
-    .delete(
-      `https://livejs-api.hexschool.io/api/livejs/v1/customer/${api_path}/carts/`
-    )
+    api.deleteAllCarts()
     .then((res) => {
       Swal.fire("刪除成功", "刪除全品項成功", "success");
       getCartList();
@@ -290,9 +284,7 @@ orderBtn.addEventListener("click", (e) => {
   //   }
 
   axios
-    .post(
-      `https://livejs-api.hexschool.io/api/livejs/v1/customer/${api_path}/orders/`,
-      {
+    api.apiAddOrder({
         data: {
           user: {
             name: customerName,

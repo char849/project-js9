@@ -1,3 +1,10 @@
+// 匯入 c3.js
+import 'https://cdnjs.cloudflare.com/ajax/libs/d3/5.16.0/d3.min.js';
+import 'https://cdnjs.cloudflare.com/ajax/libs/c3/0.7.20/c3.min.js';
+
+// 匯入 共用 API
+import * as api from './api.js';
+
 let orderData = [];
 const orderList = document.querySelector(".js-orderList");
 
@@ -51,14 +58,7 @@ function getOrderList() {
   // loading 顯示
   document.getElementById("preloder").style.display = "block";
   axios
-    .get(
-      `https://livejs-api.hexschool.io/api/livejs/v1/admin/${api_path}/orders`,
-      {
-        headers: {
-          Authorization: token,
-        },
-      }
-    )
+    api.getOrders()
     .then((res) => {
       orderData = res.data.orders;
       let str = "";
@@ -138,20 +138,12 @@ function changeOrderStatus(status, id) {
   // loading 顯示
   document.getElementById("preloder").style.display = "block";
   axios
-    .put(
-      `https://livejs-api.hexschool.io/api/livejs/v1/admin/${api_path}/orders/`,
-      {
+    api.updateOrder({
         data: {
           id: id,
           paid: newStatus,
-        },
-      },
-      {
-        headers: {
-          Authorization: token,
-        },
-      }
-    )
+        }
+      })
     .then((res) => {
       Swal.fire("修改訂單狀態成功", "變更狀態", "success");
       getOrderList();
@@ -167,14 +159,7 @@ function delOrderItem(id) {
   // loading 顯示
   document.getElementById("preloder").style.display = "block";
   axios
-    .delete(
-      `https://livejs-api.hexschool.io/api/livejs/v1/admin/${api_path}/orders/${id}`,
-      {
-        headers: {
-          Authorization: token,
-        },
-      }
-    )
+    api.deleteOrder()
     .then((res) => {
       Swal.fire("刪除該筆訂單成功", "己刪除單筆訂單", "success");
       getOrderList();
@@ -190,14 +175,7 @@ const discardAllBtn = document.querySelector('.discardAllBtn');
 discardAllBtn.addEventListener('click', (e)=>{
     e.preventDefault();
     axios
-    .delete(
-      `https://livejs-api.hexschool.io/api/livejs/v1/admin/${api_path}/orders/`,
-      {
-        headers: {
-          Authorization: token,
-        },
-      }
-    )
+    api.deleteAllOrders()
     .then((res) => {
       Swal.fire("刪除全部訂單成功", "己刪除全部訂單", "success");
       getOrderList();
