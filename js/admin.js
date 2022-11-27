@@ -56,9 +56,7 @@ function renderC3() {
 
   // 物件轉成陣列
   const chartData = Object.keys(total).map((product) => [
-    product,
-    total[product],
-  ]);
+    product, total[product]]);
   console.log(chartData);
 
   // 降冪排列，取前三高營收，第四筆以後變其他
@@ -75,7 +73,7 @@ function renderC3() {
   }
 
   // C3.js
-  let chart = c3.generate({
+  c3.generate({
     bindto: "#chart", // HTML 元素綁定
     data: {
       type: "pie",
