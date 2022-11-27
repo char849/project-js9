@@ -21,35 +21,66 @@ function renderC3() {
   let total = {};
   orderData.forEach((item) => {
     item.products.forEach((productItem) => {
-      if (total[productItem.category] == undefined) {
-        total[productItem.category] = productItem.price * productItem.quantity;
+      const { title, price, quantity } = productItem;
+      if (total[title] == undefined) {
+        total[title] = price * quantity;
       } else {
-        total[productItem.category] += productItem.price * productItem.quantity;
+        total[title] += price * quantity;
       }
     });
   });
+  // orderData.forEach((item) => {
+  //   item.products.forEach((productItem) => {
+  //     if (total[productItem.category] == undefined) {
+  //       total[productItem.category] = productItem.price * productItem.quantity;
+  //     } else {
+  //       total[productItem.category] += productItem.price * productItem.quantity;
+  //     }
+  //   });
+  // });
   console.log(total);
   // 物件轉成陣列
-  let categoryArry = Object.keys(total);
-  console.log(categoryArry);
-  // 組c3.js格式
-  let newData = [];
-  categoryArry.forEach((item) => {
-    let ary = [];
-    ary.push(item);
-    //console.log(item)
-    ary.push(total[item]);
-    //console.log(total[item]);
-    newData.push(ary);
-  });
-  console.log(newData);
+  // let categoryArry = Object.keys(total);
+  // console.log(categoryArry);
+  // // 組c3.js格式
+  // let newData = [];
+  // categoryArry.forEach((item) => {
+  //   let ary = [];
+  //   ary.push(item);
+  //   //console.log(item)
+  //   ary.push(total[item]);
+  //   //console.log(total[item]);
+  //   newData.push(ary);
+  // });
+  // console.log(newData);
+
+  const chartData = Object
+        .keys(total)
+        .map((product) => [product, total[product]]);
+
+  // 降冪排列，取前三高營收，第四筆以後變其他
+  const sortArry = chartData.sort((a,b)=>b[1]-a[1]);
+  if(sortArry.length>3){
+    let otherTotal = 0;
+    sortArry.forEach((item,index)=>{
+      if(index>2){
+        otherTotal += sortArry[index][1];
+      };
+    });
+    sortArry.splice(3, sortArry.length - 1);
+    sortArry.push(['其他', otherTotal]);
+  }
+
   // C3.js
   let chart = c3.generate({
     bindto: "#chart", // HTML 元素綁定
     data: {
       type: "pie",
-      columns: newData,
+      columns: sortArry,
     },
+    color: {
+        pattern: ["#DACBFF", "#9D7FEA", "#5434A7", "#301E5F"]
+    }
   });
 }
 
