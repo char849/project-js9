@@ -1,9 +1,9 @@
 // 匯入 c3.js
-import 'https://cdnjs.cloudflare.com/ajax/libs/d3/5.16.0/d3.min.js';
-import 'https://cdnjs.cloudflare.com/ajax/libs/c3/0.7.20/c3.min.js';
+import "https://cdnjs.cloudflare.com/ajax/libs/d3/5.16.0/d3.min.js";
+import "https://cdnjs.cloudflare.com/ajax/libs/c3/0.7.20/c3.min.js";
 
 // 匯入 共用 API
-import * as api from './api.js';
+import * as api from "./api.js";
 
 let orderData = [];
 const orderList = document.querySelector(".js-orderList");
@@ -38,11 +38,11 @@ function renderC3() {
   //     }
   //   });
   // });
-  console.log(total);
+  // console.log(total);
   // 物件轉成陣列
   // let categoryArry = Object.keys(total);
   // console.log(categoryArry);
-  // // 組c3.js格式
+  // 組c3.js格式
   // let newData = [];
   // categoryArry.forEach((item) => {
   //   let ary = [];
@@ -54,21 +54,24 @@ function renderC3() {
   // });
   // console.log(newData);
 
-  const chartData = Object
-        .keys(total)
-        .map((product) => [product, total[product]]);
+  // 物件轉成陣列
+  const chartData = Object.keys(total).map((product) => [
+    product,
+    total[product],
+  ]);
+  console.log(chartData);
 
   // 降冪排列，取前三高營收，第四筆以後變其他
-  const sortArry = chartData.sort((a,b)=>b[1]-a[1]);
-  if(sortArry.length>3){
+  const sortArry = chartData.sort((a, b) => b[1] - a[1]);
+  if (sortArry.length > 3) {
     let otherTotal = 0;
-    sortArry.forEach((item,index)=>{
-      if(index>2){
+    sortArry.forEach((item, index) => {
+      if (index > 2) {
         otherTotal += sortArry[index][1];
-      };
+      }
     });
     sortArry.splice(3, sortArry.length - 1);
-    sortArry.push(['其他', otherTotal]);
+    sortArry.push(["其他", otherTotal]);
   }
 
   // C3.js
@@ -79,8 +82,8 @@ function renderC3() {
       columns: sortArry,
     },
     color: {
-        pattern: ["#DACBFF", "#9D7FEA", "#5434A7", "#301E5F"]
-    }
+      pattern: ["#DACBFF", "#9D7FEA", "#5434A7", "#301E5F"],
+    },
   });
 }
 
@@ -88,8 +91,9 @@ function renderC3() {
 function getOrderList() {
   // loading 顯示
   document.getElementById("preloder").style.display = "block";
-  axios
-    api.getOrders()
+  axios;
+  api
+    .getOrders()
     .then((res) => {
       orderData = res.data.orders;
       let str = "";
@@ -134,7 +138,7 @@ function getOrderList() {
       });
       orderList.innerHTML = str;
       renderC3();
-    })    
+    })
     .finally(() => {
       // loading 消失
       document.getElementById("preloder").style.display = "none";
@@ -168,13 +172,14 @@ function changeOrderStatus(status, id) {
   }
   // loading 顯示
   document.getElementById("preloder").style.display = "block";
-  axios
-    api.updateOrder({
-        data: {
-          id: id,
-          paid: newStatus,
-        }
-      })
+  axios;
+  api
+    .updateOrder({
+      data: {
+        id: id,
+        paid: newStatus,
+      },
+    })
     .then((res) => {
       Swal.fire("修改訂單狀態成功", "變更狀態", "success");
       getOrderList();
@@ -189,8 +194,9 @@ function changeOrderStatus(status, id) {
 function delOrderItem(id) {
   // loading 顯示
   document.getElementById("preloder").style.display = "block";
-  axios
-    api.deleteOrder()
+  axios;
+  api
+    .deleteOrder()
     .then((res) => {
       Swal.fire("刪除該筆訂單成功", "己刪除單筆訂單", "success");
       getOrderList();
@@ -202,13 +208,12 @@ function delOrderItem(id) {
 }
 
 // 刪除全部訂單
-const discardAllBtn = document.querySelector('.discardAllBtn');
-discardAllBtn.addEventListener('click', (e)=>{
-    e.preventDefault();
-    axios
-    api.deleteAllOrders()
-    .then((res) => {
-      Swal.fire("刪除全部訂單成功", "己刪除全部訂單", "success");
-      getOrderList();
-    });
-})
+const discardAllBtn = document.querySelector(".discardAllBtn");
+discardAllBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  axios;
+  api.deleteAllOrders().then((res) => {
+    Swal.fire("刪除全部訂單成功", "己刪除全部訂單", "success");
+    getOrderList();
+  });
+});
