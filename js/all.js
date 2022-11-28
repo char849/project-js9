@@ -2,7 +2,6 @@
 // 匯入 共用 API
 import * as api from './api.js';
 
-// console.log(api_path, token)
 const productList = document.querySelector(".productWrap");
 const productSelect = document.querySelector(".productSelect");
 const cartList = document.querySelector(".shoppingCart-tableList");

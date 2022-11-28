@@ -126,7 +126,7 @@ function getOrderList() {
               <p>${productStr}</p>
             </td>
             <td>${orderTime}</td>
-            <td class="orderStatus">
+            <td class="orderStatus">            
               <a href="#" class="js-orderStatus" data-status="${item.paid}" data-id="${item.id}">${orderStatus}</a>
             </td>
             <td>
